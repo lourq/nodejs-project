@@ -1,12 +1,19 @@
 import express from "express";
 import { resolve, join } from "path";
+import { Server } from "socket.io";
 
 const app = express();
 const PORT = 4000;
 
 app.use(express.static("public"));
 
-app.get(["/assets/sprite/idle.png" , "/assets/sprite/walk/*.png", "/assets/background/grass.png"], (req, res) => {
+app.get("/sandbox" , (req , res) => {
+  res.sendFile(join(resolve('') + '/public/pages/sandbox.html') , err => {
+    if(err) console.error(err)
+  })
+} )
+
+app.get(["/assets/sprite/*" , "/assets/background/*.png"], (req, res) => {
   const path: String = join(resolve(""), req.url);
   sendFile(path,res);
 });
@@ -22,8 +29,17 @@ const sendFile = (path:String , res) => {
   });
 }
 
-app.listen(4000, () => {
+const inst = app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
+});
+
+const io = new Server(inst)
+
+io.on('connection', (socket) => {
+  socket.on('join room', (roomId) => {
+    socket.join(roomId);
+    console.log(`Socket ${socket.id} joined room ${roomId}`);
+  });
 });
 
 
@@ -37,7 +53,7 @@ const startX = 19;
   const canvas = createCanvas(endX - startX, endY - startY);
   const ctx = canvas.getContext("2d");
 
-  const image = await loadImage("assets/sprite/amoungus-sprite.png");
+  const image = await loadImage("assets/sprite/among-us-sprite.png");
   ctx.drawImage(image, -startX, -startY);
 
   const buffer: Buffer = canvas.toBuffer("image/png");

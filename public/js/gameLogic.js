@@ -70,6 +70,8 @@ let character = spriteIdle;
 let characterX = canvas.width / 2 - character.width / 2;
 let characterY = canvas.height / 2 - character.height / 2;
 
+//#region  Обработчик события нажатия клавиш
+
 document.addEventListener("keyup", (event) => {
   const key = event.key;
   if (key === "w") {
@@ -86,10 +88,9 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-// Обработчик события нажатия клавиш
 document.addEventListener("keydown", (event) => {
   const key = event.key;
-  const step = 13; // Регулируйте шаг в зависимости от ваших требований
+  const step = 13;
   if (key === "w") {
     characterY -= step;
     move(spritesWalk);
@@ -103,7 +104,7 @@ document.addEventListener("keydown", (event) => {
     characterX += step;
     move(spritesWalk);
   } 
-
+  //#endregion
   
   // Ограничение передвижения персонажа, чтобы он не выходил за пределы карты
   if (characterX < 0) {

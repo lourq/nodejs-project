@@ -1,0 +1,40 @@
+body {
+    background-image: url('/assets/background/space_background.png');
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.button {
+    background-color: #1c1c1c;
+    border: 2px solid white;
+    color: white;
+    padding: 20px 40px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px black;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: silver;
+}
+
+.button:active {
+    box-shadow: 0 2px black;
+    transform: translateY(2px);
+}
