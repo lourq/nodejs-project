@@ -32,5 +32,5 @@ body {
 #dropdownMenu a {
   display: block;
   color: white;
-  /* Дополнительные стили для ссылок меню */
+  text-decoration: none;
 }

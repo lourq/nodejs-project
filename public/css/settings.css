@@ -1,0 +1,71 @@
+body {
+    background-image: url('/assets/background/space_background.png');
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.settings-container {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 4px #222;
+}
+
+.settings-container h2 {
+    text-align: center;
+    color: silver;
+}
+
+.setting {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+.setting label {
+    margin-right: 10px;
+}
+
+.nickname-setting input[type="text"] {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.setting input[type="range"],
+.setting input[type="text"],
+.submit-btn,
+.control-btn,
+.back-btn {
+    background-color: silver;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.setting input[type="range"],
+.setting input[type="text"] {
+    background-color: white;
+    color: black;
+}
+
+.control-btn,
+.back-btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submit-btn:hover,
+.control-btn:hover,
+.back-btn:hover {
+    background-color: silver;
+}

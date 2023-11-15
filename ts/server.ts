@@ -7,18 +7,18 @@ const PORT = 4000;
 
 app.use(express.static("public"));
 
-app.get("/sandbox" , (req , res) => {
-  res.sendFile(join(resolve('') + '/public/pages/sandbox.html') , err => {
-    if(err) console.error(err)
-  })
-} )
-
-app.get(["/assets/sprite/*" , "/assets/background/*.png"], (req, res) => {
-  const path: String = join(resolve(""), req.url);
-  sendFile(path,res);
+app.get(["/sandbox","/settings"],(req, res) => {
+  res.sendFile(join(resolve("") + `/public/pages/${req.url}.html`), (err) => {
+    if (err) console.error(err);
+  });
 });
 
-const sendFile = (path:String , res) => {
+app.get(["/assets/sprite/*", "/assets/background/*.png"], (req, res) => {
+  const path: String = join(resolve(""), req.url);
+  sendFile(path, res);
+});
+
+const sendFile = (path: String, res) => {
   res.sendFile(path, (err) => {
     if (err) {
       console.error(`Error message : ${err.message}`);
@@ -27,21 +27,20 @@ const sendFile = (path:String , res) => {
       console.log(`Send : ${path}`);
     }
   });
-}
+};
 
 const inst = app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
 
-const io = new Server(inst)
+const io = new Server(inst);
 
-io.on('connection', (socket) => {
-  socket.on('join room', (roomId) => {
+io.on("connection", (socket) => {
+  socket.on("join room", (roomId) => {
     socket.join(roomId);
     console.log(`Socket ${socket.id} joined room ${roomId}`);
   });
 });
-
 
 /*#region Notes
 
