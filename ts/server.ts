@@ -1,6 +1,7 @@
 import express from "express";
 import { resolve, join } from "path";
 import { Server } from "socket.io";
+import { tablesExists} from "./database"
 
 const app = express();
 const PORT = 4000;
@@ -31,6 +32,7 @@ const sendFile = (path: String, res) => {
 
 const inst = app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
+  tablesExists()
 });
 
 const io = new Server(inst);
