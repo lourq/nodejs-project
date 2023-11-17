@@ -1,17 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="css/menu.css">
-</head>
-<body>
-    <div class="menu">
-        <button class="button" id="playButton">Play</button>
-        <button class="button" id="settingsButton">Settings</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Register</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="menu" id="loginMenu">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <input
+            type="text"
+            id="loginUsername"
+            name="username"
+            required
+            placeholder="Username"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            required
+            placeholder="Password"
+          />
+        </div>
+        <button type="submit" class="button">Login</button>
+        <p>
+          Don't have an account?
+          <button type="button" class="toggle-button" id="toggleButton">
+            Register
+          </button>
+        </p>
+      </form>
     </div>
-</body>
-<script src="js/redirect.js"></script>
+
+    <div class="menu" id="registerMenu" style="display: none">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <div class="input-group">
+          <input
+            type="text"
+            id="registerUsername"
+            name="username"
+            required
+            placeholder="Username"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            class="input-normal"
+            id="registerPassword"
+            name="password"
+            required
+            placeholder="Password"
+          />
+        </div>
+        <div class="input-group">
+          <input
+            type="password"
+            class="input-normal"
+            id="registerPasswordConfirm"
+            name="password"
+            required
+            placeholder="Confirm Password"
+          />
+        </div>
+        <button type="submit" class="button">Register</button>
+        <p>
+          Already have an account?
+          <button type="button" class="toggle-button" id="toggleButton">
+            Login
+          </button>
+        </p>
+      </form>
+    </div>
+
+    <script type="module" src="js/script/toggleForm.js"></script>
+    <script type="module" src="js/api/register.js"></script>
+  </body>
 </html>

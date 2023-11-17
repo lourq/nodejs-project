@@ -8,7 +8,24 @@ const PORT = 4000;
 
 app.use(express.static("public"));
 
-app.get(["/sandbox","/settings",'/gameMenu'],(req, res) => {
+//#region POST
+
+app.post('/api/register' , (req, res) => {
+  res.status(200);
+  res.send();
+})
+
+app.post('/api/login' , (req, res) => {
+  res.status(200);
+  res.send();
+})
+
+//#endregion
+
+
+
+//#region GET
+app.get(["/sandbox","/settings",'/gameMenu','/menu'],(req, res) => {
   res.sendFile(join(resolve("") + `/public/pages/${req.url}.html`), (err) => {
     if (err) console.error(err);
   });
@@ -18,6 +35,15 @@ app.get(["/assets/sprite/*", "/assets/background/*.png"], (req, res) => {
   const path: String = join(resolve(""), req.url);
   sendFile(path, res);
 });
+//#endregion
+
+const inst = app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
+  tablesExists()
+});
+
+
+//#region custom function
 
 const sendFile = (path: String, res) => {
   res.sendFile(path, (err) => {
@@ -30,38 +56,10 @@ const sendFile = (path: String, res) => {
   });
 };
 
-const inst = app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-  // tablesExists()
-});
+//#endregion
 
 const io = new Server(inst);
 
 io.on("connection", (socket) => {
-  socket.on("join room", (roomId) => {
-    socket.join(roomId);
-    console.log(`Socket ${socket.id} joined room ${roomId}`);
-  });
+  console.log(socket.id)
 });
-
-/*#region Notes
-
-const startX = 19;
-  const startY = 21;
-  const endX = 77;
-  const endY = 93;
-
-  const canvas = createCanvas(endX - startX, endY - startY);
-  const ctx = canvas.getContext("2d");
-
-  const image = await loadImage("assets/sprite/among-us-sprite.png");
-  ctx.drawImage(image, -startX, -startY);
-
-  const buffer: Buffer = canvas.toBuffer("image/png");
-  res.writeHead(200, {
-    "Content-Type": "image/png",
-    "Content-Length": buffer.length,
-  });
-  res.end(buffer);
-
-#endregion*/

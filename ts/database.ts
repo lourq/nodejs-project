@@ -5,7 +5,7 @@ import { resolve, join } from "path";
 
 config();
 
-const pathSqlFiles = join(resolve(""), "sql");
+const pathSqlFiles = join(resolve(""), "sql/Tables");
 
 const pool = mysql
   .createPool({

@@ -1,0 +1,101 @@
+body {
+  background-image: url("/assets/background/space_background.png");
+  font-family: "AmongUsFont";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: white;
+
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.input-group {
+  margin: 10px;
+}
+
+.input-error {
+  border: 2px solid red;
+}
+
+.input-normal {
+  border: 2px solid white;
+}
+
+.input-group input {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  background-color: transparent;
+  color: white;
+  font-size: 18px;
+  width: 90%;
+}
+
+.button {
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  padding: 20px 40px;
+  margin: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px black;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0d0d0d;
+}
+
+.button:active {
+  box-shadow: 0 2px black;
+  transform: translateY(2px);
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #fff;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.toggle-button:focus {
+  outline: none;
+}
+
+.toggle-button:hover {
+  text-decoration: none;
+}
+
+#notify {
+  position: absolute; 
+  width: 300px; 
+  height: 20px; 
+  top: 10px; 
+  right: 10px;
+
+  padding: 20px 40px;
+  text-align: center;
+  
+  font-size: 20px;
+  color:white;
+  background-color: black;
+
+  border: 2px solid white;
+  border-radius: 5px;
+  box-shadow: 0 4px black;
+}
+
+

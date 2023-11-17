@@ -3,6 +3,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+const mapWidth = 3000; // Пример ширины карты
+const mapHeight = 3000; // Пример высоты карты
+
 const spriteWidth = 38;
 const spriteHeight = 52;
 const spritesName = [
@@ -16,6 +19,9 @@ const spritesName = [
 const spriteIdle = new Image();
 const spritesWalk = [];
 let spriteMoveIndex = 0;
+
+let cameraX = 0;
+let cameraY = 0;
 
 //#endregion
 
@@ -50,6 +56,16 @@ const resetSprite = () => {
   character = spriteIdle;
   draw();
 };
+
+function centerCameraOnCharacter() {
+  cameraX = characterX - canvas.width / 2 + spriteWidth / 2;
+  cameraY = characterY - canvas.height / 2 + spriteHeight / 2;
+
+  // Ограничение перемещения камеры, чтобы она не выходила за пределы карты
+  cameraX = Math.min(Math.max(0, cameraX), mapWidth - canvas.width);
+  cameraY = Math.min(Math.max(0, cameraY), mapHeight - canvas.height);
+}
+
 
 //#endregion
 
@@ -92,49 +108,65 @@ document.addEventListener("keydown", (event) => {
   const key = event.key;
   const step = 13;
   if (key === "w") {
-    characterY -= step;
-    move(spritesWalk);
+    characterY = Math.max(0, characterY - step);
   } else if (key === "s") {
-    characterY += step;
-    move(spritesWalk);
+    characterY = Math.min(mapHeight - spriteHeight, characterY + step);
   } else if (key === "a") {
-    characterX -= step;
-    move(spritesWalk);
+    characterX = Math.max(0, characterX - step);
   } else if (key === "d") {
-    characterX += step;
-    move(spritesWalk);
-  } 
+    characterX = Math.min(mapWidth - spriteWidth, characterX + step);
+  }
   //#endregion
-  
-  // Ограничение передвижения персонажа, чтобы он не выходил за пределы карты
-  if (characterX < 0) {
-    characterX = 0;
-  }
-  if (characterX + character.width > canvas.width) {
-    characterX = canvas.width - character.width;
-  }
-  if (characterY < 0) {
-    characterY = 0;
-  }
-  if (characterY + character.height > canvas.height) {
-    characterY = canvas.height - character.height;
-  }
 
+  centerCameraOnCharacter();
+  move(spritesWalk);
   draw();
 });
+
+function drawMap(ctx, cameraX, cameraY) {
+  // Здесь должна быть логика отрисовки тайлов карты или фона
+  // в зависимости от текущего положения камеры.
+  // Например, ты можешь иметь двумерный массив тайлов карты, 
+  // и здесь ты бы перебирал только те тайлы, которые должны быть видны на экране.
+  // Для простоты, здесь просто рисуем прямоугольник, который будет представлять карту.
+  
+  const visibleMapX = Math.max(0, cameraX); // Убедимся, что координаты не отрицательные
+  const visibleMapY = Math.max(0, cameraY);
+  
+  // Для примера, пусть у нас будет карта просто как цветной прямоугольник
+  ctx.fillStyle = '#3e5f74'; // цвет фона карты
+  ctx.fillRect(
+    -visibleMapX,
+    -visibleMapY,
+    mapWidth,
+    mapHeight
+  );
+}
 
 // Функция отрисовки персонажа
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+  ctx.save(); // Сохраняем текущее состояние контекста перед трансформациями
+  
+  // Двигаем контекст так, чтобы персонаж был в центре канваса
+  ctx.translate(
+    canvas.width / 2 - characterX - spriteWidth / 2,
+    canvas.height / 2 - characterY - spriteHeight / 2
+  );
+  
+  // Отрисовка карты
+  drawMap(ctx, cameraX, cameraY);
+  
   // Отрисовка персонажа
   ctx.drawImage(
     character,
     characterX,
     characterY,
-    character.width,
-    character.height
+    spriteWidth,
+    spriteHeight
   );
+  
+  ctx.restore(); // Восстанавливаем состояние контекста после трансформаций
 }
 
 // Первоначальная отрисовка
@@ -144,7 +176,7 @@ character.onload = draw;
 window.addEventListener("resize", () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-
+  centerCameraOnCharacter();
   draw();
 });
 
