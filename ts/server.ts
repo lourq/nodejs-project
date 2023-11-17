@@ -8,7 +8,7 @@ const PORT = 4000;
 
 app.use(express.static("public"));
 
-app.get(["/sandbox","/settings"],(req, res) => {
+app.get(["/sandbox","/settings",'/gameMenu'],(req, res) => {
   res.sendFile(join(resolve("") + `/public/pages/${req.url}.html`), (err) => {
     if (err) console.error(err);
   });
@@ -32,7 +32,7 @@ const sendFile = (path: String, res) => {
 
 const inst = app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
-  tablesExists()
+  // tablesExists()
 });
 
 const io = new Server(inst);

@@ -1,17 +1,18 @@
 body {
     background-image: url('/assets/background/space_background.png');
-    background-size: cover;
-    font-family: 'Arial', sans-serif;
-    color: white;
+    font-family: 'AmongUsFont';
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
 }
+
 .settings-container {
-    background-color: #333;
+    background-color: black;
+    border: 2px solid white;
     padding: 20px;
+    color:white;
     border-radius: 10px;
     width: 400px;
     box-shadow: 0 4px #222;
@@ -19,7 +20,7 @@ body {
 
 .settings-container h2 {
     text-align: center;
-    color: silver;
+    font-size: 2em;
 }
 
 .setting {
@@ -42,13 +43,15 @@ body {
 .submit-btn,
 .control-btn,
 .back-btn {
-    background-color: silver;
+    background-color: black;
+    border: 2px solid white;
     color: white;
-    border: none;
     padding: 5px 10px;
     border-radius: 5px;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px black;
+    transition: all 0.3s ease;
 }
 
 .setting input[type="range"],
@@ -67,5 +70,11 @@ body {
 .submit-btn:hover,
 .control-btn:hover,
 .back-btn:hover {
-    background-color: silver;
+    background-color: #0d0d0d;
+}
+.submit-btn:active,
+.control-btn:active,
+.back-btn:active {
+    box-shadow: 0 2px black;
+    transform: translateY(2px);
 }

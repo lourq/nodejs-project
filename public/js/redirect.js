@@ -1,5 +1,5 @@
 playButton.onclick = () => {
-    window.location.href = 'sandbox'
+    window.location.href = 'gameMenu'
 }
 settingsButton.onclick = () => {
     window.location.href = 'settings'
