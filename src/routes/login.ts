@@ -6,8 +6,8 @@ const router = express.Router();
 router.post("/login", (req, res) => {
   const { userName, password } = req.body;
   checkCredentials(userName, password).then(data => {
-    if(data) { 
-        res.status(200).redirect('/menu')
+    if(data) {
+        res.redirect('/menu')
     }
     else res.status(403).send()
   })

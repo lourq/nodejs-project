@@ -1,8 +1,8 @@
 @font-face {
     font-family: 'AmongUsFont';
-    src: url('/public/fonts/impostograph-regular-webfont.woff2') format('woff2'),
-         url('/public/fonts/impostograph-regular-webfont.woff') format('woff'),
-         url('/public/fonts/Impostograph-Regular.ttf') format('truetype');
+    src: url('/fonts/impostograph-regular-webfont.woff2') format('woff2'),
+         url('/fonts/impostograph-regular-webfont.woff') format('woff'),
+         url('/fonts/Impostograph-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 

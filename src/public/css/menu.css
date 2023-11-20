@@ -37,3 +37,27 @@ body {
   box-shadow: 0 2px black;
   transform: translateY(2px);
 }
+
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.chat-window {
+  position: fixed;
+  bottom: 60px; 
+  left: 20px;
+  width: 400px;
+  height: 400px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none; 
+  overflow: auto;
+}

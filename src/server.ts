@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from 'cookie-parser'
 import "./config/sequelize"
 import { Server } from "socket.io";
 
@@ -16,6 +17,7 @@ const PORT = 4000;
 app.use(express.json());
 app.use(express.static("src/public"));
 app.use(pageRoutes)
+app.use(cookieParser())
 
 app.use('/api' , [registrationRoutes , loginRoutes])
 
