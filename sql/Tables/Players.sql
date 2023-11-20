@@ -1,5 +1,5 @@
 CREATE TABLE Players (
     PlayerID INT AUTO_INCREMENT PRIMARY KEY,
-    Username VARCHAR(255) NOT NULL,
+    Username VARCHAR(255) NOT NULL UNIQUE,
     Settings JSON
 );

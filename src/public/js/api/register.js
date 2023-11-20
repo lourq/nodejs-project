@@ -1,4 +1,4 @@
-import { createNotify } from '/js/createElements/notify.js'
+import { createNotify } from '/utils/notify.js'
 import { loginForm} from '../script/toggleForm.js'
 
 const form = document.getElementById('registerForm');
