@@ -8,13 +8,56 @@
     <link rel="stylesheet" type="text/css" href="css/menu.css" />
   </head>
   <body>
-    <div class="menu">
+    
+    <div class="menu" id="mainMenu" style="display: flex">
       <button class="button" id="playButton">Play</button>
       <button class="button" id="settingsButton">Settings</button>
     </div>
+
+    <div class="menu" id="settingMenu" style="display: none">
+      <h2>Settings</h2>
+      <div class="setting">
+        <label for="volume">Music Volume:</label>
+        <input type="range" id="volume" name="volume" min="0" max="100" />
+      </div>
+      <div class="setting">
+        <label for="full-chat-history">Full Chat History:</label>
+        <input
+          type="checkbox"
+          id="full-chat-history"
+          name="full-chat-history"
+        />
+        <label class="toggle" for="full-chat-history"></label>
+      </div>
+      <div class="setting nickname-setting">
+        <label for="nickname">Change Nickname:</label>
+        <input type="text" id="nickname" name="nickname" />
+        <button class="submit-btn">Submit</button>
+      </div>
+
+      <div class="setting">
+        <label>Controls:</label>
+        <button class="control-btn">Customize</button>
+      </div>
+
+      <button class="back-btn" id="settingsBackButton">Back</button>
+    </div>
+
+    <div class="menu" id="gameMenu" style="display: none">
+      <button
+        class="menu-item"
+        id="createGameButton"
+        onclick="window.location.href = '/sandbox'"
+      >
+        Create Game
+      </button>
+      <button class="menu-item" id="findGameButton">Find Game</button>
+      <button class="back-btn" id="playBackButton">Back</button>
+    </div>
+
     <div id="chatIcon" class="chat-icon">💬</div>
 
     <div id="chatWindow" class="chat-window"></div>
   </body>
-  <script src="js/redirect.js"></script>
+  <script type="module" src="/js/script/menuScripts.js"></script>
 </html>

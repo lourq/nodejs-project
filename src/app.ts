@@ -12,6 +12,8 @@ import Players from "./models/Players";
 
 //#endregion
 
+import './controllers/socketController'
+
 // await dropBase()
 
 await Players.sync()

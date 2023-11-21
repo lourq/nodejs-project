@@ -24,12 +24,12 @@ const ChatLogs = sequelize.define(
       allowNull: false,
     },
     TimeStamp: {
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false,
     },
   },
   {
-    updatedAt: false,
+    timestamps: false,
     indexes: [
       {
         name: "idx_sessionid",
