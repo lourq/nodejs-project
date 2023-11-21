@@ -1,10 +1,11 @@
 import Players from "../models/Players";
 
-export const addData = async (data) => {
+export const addData = async (data , ip) => {
   try {
     return await Players.build({
       Username: data.userName,
       Password: data.password,
+      IP : ip
     }).save();
   } catch (err) {
     throw err;

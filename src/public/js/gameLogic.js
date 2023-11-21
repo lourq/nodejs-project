@@ -1,217 +1,150 @@
-//#region global variable
-
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-
-const mapWidth = 3000; // Пример ширины карты
-const mapHeight = 3000; // Пример высоты карты
-
-const spriteWidth = 38;
-const spriteHeight = 52;
-const spritesName = [
-  "Walk0001.png",
-  "Walk0002.png",
-  "Walk0003.png",
-  "Walk0004.png",
-  "Walk0005.png",
-  "Walk0006.png",
-];
-const spriteIdle = new Image();
-const spritesWalk = [];
-let spriteMoveIndex = 0;
-
-let cameraX = 0;
-let cameraY = 0;
-
-//#endregion
-
-//#region init variable
-
-spriteIdle.src = "/assets/sprite/idle.png";
-spriteIdle.width = spriteWidth;
-spriteIdle.height = spriteHeight;
-
-//#endregion
-
-//#region functions
-
-const initSprites = (names, sprites) => {
-  const path = "/assets/sprite/";
-
-  // init sprites walk
-  for (let i = 0; i < names.length; i++) {
-    spritesWalk[i] = new Image();
-    spritesWalk[i].src = path + "walk/" + names[i];
-    spritesWalk[i].width = spriteWidth;
-    spritesWalk[i].height = spriteHeight;
-  }
-};
-const move = (spritesMove) => {
-  if (spriteMoveIndex == spritesMove.length - 1) spriteMoveIndex = 0;
-  character = spritesMove[spriteMoveIndex];
-  spriteMoveIndex++;
+const config = {
+  type: Phaser.AUTO,
+  width: window.innerWidth,
+  height: window.innerHeight,
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 0 },
+    },
+  },
+  scene: {
+    preload: preload,
+    create: create,
+    update: update,
+  },
 };
 
-const resetSprite = () => {
-  character = spriteIdle;
-  draw();
-};
+let player;
+let keys;
+const game = new Phaser.Game(config);
+let eKey;
+let compTrigger;
+let powerTrigger;
 
-function centerCameraOnCharacter() {
-  cameraX = characterX - canvas.width / 2 + spriteWidth / 2;
-  cameraY = characterY - canvas.height / 2 + spriteHeight / 2;
-
-  // Ограничение перемещения камеры, чтобы она не выходила за пределы карты
-  cameraX = Math.min(Math.max(0, cameraX), mapWidth - canvas.width);
-  cameraY = Math.min(Math.max(0, cameraY), mapHeight - canvas.height);
-}
-
-
-//#endregion
-
-//#region init function
-
-initSprites(spritesName, spritesWalk);
-
-//#endregion
-
-// Установка размеров холста на весь экран
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-// Создание объекта Image для спрайта персонажа
-let character = spriteIdle;
-
-// Начальное положение персонажа в центре экрана
-let characterX = canvas.width / 2 - character.width / 2;
-let characterY = canvas.height / 2 - character.height / 2;
-
-//#region  Обработчик события нажатия клавиш
-
-document.addEventListener("keyup", (event) => {
-  const key = event.key;
-  if (key === "w") {
-    resetSprite();
-  } else if (key === "s") {
-    resetSprite();
-  } else if (key === "a") {
-    resetSprite();
-  } else if (key === "d") {
-    resetSprite();
-  } else if ( key === "e") {
-    // use
-    console.log('use')
+function preload() {
+  // this.load.image("background", "/assets/map/map.webp");
+  this.load.image("background", "/assets/map/map.png");
+  for (let i = 1; i < 7; i++) {
+    this.load.image("walk" + i, "/assets/sprite/walk/Walk000" + i + ".png");
   }
-});
+  this.load.image("idle", "/assets/sprite/idle.png");
+  this.load.image("comp", "/assets/icons/comp.png");
+  this.load.image("power", "/assets/icons/power.png");
+  // this.load.image("vent", "/assets/icons/vent.png");
+}
 
-document.addEventListener("keydown", (event) => {
-  const key = event.key;
-  const step = 13;
-  if (key === "w") {
-    characterY = Math.max(0, characterY - step);
-  } else if (key === "s") {
-    characterY = Math.min(mapHeight - spriteHeight, characterY + step);
-  } else if (key === "a") {
-    characterX = Math.max(0, characterX - step);
-  } else if (key === "d") {
-    characterX = Math.min(mapWidth - spriteWidth, characterX + step);
+function create() {
+  this.physics.world.setBounds(0, 0, 2000, 2000);
+
+  // this.physics.world.setBounds(0, 0, 2000, 1200);
+
+  const bg = this.add.image(0, 0, "background").setOrigin(0);
+  bg.displayWidth = this.physics.world.bounds.width;
+  bg.displayHeight = this.physics.world.bounds.height;
+
+  player = this.physics.add.sprite(1000, 0, "walk1").setDisplaySize(20, 26);
+
+  const camera = this.cameras.main.startFollow(player, true);
+
+  camera.setZoom(3);
+
+  keys = this.input.keyboard.addKeys({
+    up: Phaser.Input.Keyboard.KeyCodes.W,
+    left: Phaser.Input.Keyboard.KeyCodes.A,
+    down: Phaser.Input.Keyboard.KeyCodes.S,
+    right: Phaser.Input.Keyboard.KeyCodes.D,
+  });
+
+  // Создание анимации ходьбы
+  this.anims.create({
+    key: "walk",
+    frames: [
+      { key: "walk1" },
+      { key: "walk2" },
+      { key: "walk3" },
+      { key: "walk4" },
+      { key: "walk5" },
+      { key: "walk6" },
+    ],
+    frameRate: 15,
+    repeat: -1,
+  });
+
+  player.anims.play("walk", true);
+
+  const graphics = this.add.graphics();
+
+  graphics.lineStyle(2, 0xff0000, 0.5); // Толщина 2, красный цвет, 50% прозрачности
+
+  graphics.strokeRect(100, 100, 300, 200); // Пример координат и размеров
+
+  // Создание группы для невидимых стен
+  const walls = this.physics.add.staticGroup();
+
+  // Добавление невидимых стен
+  walls.create(856, 4, null).setSize(260, 20).setOffset(0, 0).setVisible(true);
+  walls
+    .create(1050, 89, null)
+    .setSize(100, 50)
+    .setOffset(0, 30)
+    .setVisible(true);
+  // Вы можете добавить столько стен, сколько вам нужно
+
+  // Включение коллизии между игроком и стенами
+  this.physics.add.collider(player, walls);
+
+  compTrigger = this.physics.add.sprite(894, 140, "comp").setVisible(true);
+  compTrigger.setDisplaySize(30, 30);
+
+  powerTrigger = this.physics.add.sprite(1070, 550, "power").setVisible(true);
+  powerTrigger.setDisplaySize(15, 10);
+
+  // Добавление и настройка клавиши E
+  eKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+}
+
+function toggleComp() {
+  window.location.href = '/menu'
+}
+
+function togglePower() {
+  console.log('power use');
+}
+
+function update() {
+  player.setVelocity(0);
+
+  if (keys.left.isDown) {
+    player.setVelocityX(-125);
+    player.flipX = true; // Разворот спрайта влево
+  } else if (keys.right.isDown) {
+    player.setVelocityX(125);
+    player.flipX = false; // Разворот спрайта вправо
   }
-  //#endregion
 
-  centerCameraOnCharacter();
-  move(spritesWalk);
-  draw();
-});
+  if (keys.up.isDown) {
+    player.setVelocityY(-125);
+  } else if (keys.down.isDown) {
+    player.setVelocityY(125);
+  }
+  console.log("X: " + player.x.toFixed(2) + " Y: " + player.y.toFixed(2));
 
-function drawMap(ctx, cameraX, cameraY) {
-  // Здесь должна быть логика отрисовки тайлов карты или фона
-  // в зависимости от текущего положения камеры.
-  // Например, ты можешь иметь двумерный массив тайлов карты, 
-  // и здесь ты бы перебирал только те тайлы, которые должны быть видны на экране.
-  // Для простоты, здесь просто рисуем прямоугольник, который будет представлять карту.
-  
-  const visibleMapX = Math.max(0, cameraX); // Убедимся, что координаты не отрицательные
-  const visibleMapY = Math.max(0, cameraY);
-  
-  // Для примера, пусть у нас будет карта просто как цветной прямоугольник
-  ctx.fillStyle = '#3e5f74'; // цвет фона карты
-  ctx.fillRect(
-    -visibleMapX,
-    -visibleMapY,
-    mapWidth,
-    mapHeight
-  );
+  if (player.body.velocity.x !== 0 || player.body.velocity.y !== 0) {
+    player.anims.play("walk", true);
+  } else {
+    player.anims.stop();
+    player.setTexture("idle"); // Сброс спрайта при остановке
+  }
+
+  // Проверка расстояния от игрока до триггера
+  checkTriggerAndAct(compTrigger, toggleComp);
+  checkTriggerAndAct(powerTrigger, togglePower);
 }
 
-// Функция отрисовки персонажа
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save(); // Сохраняем текущее состояние контекста перед трансформациями
-  
-  // Двигаем контекст так, чтобы персонаж был в центре канваса
-  ctx.translate(
-    canvas.width / 2 - characterX - spriteWidth / 2,
-    canvas.height / 2 - characterY - spriteHeight / 2
-  );
-  
-  // Отрисовка карты
-  drawMap(ctx, cameraX, cameraY);
-  
-  // Отрисовка персонажа
-  ctx.drawImage(
-    character,
-    characterX,
-    characterY,
-    spriteWidth,
-    spriteHeight
-  );
-  
-  ctx.restore(); // Восстанавливаем состояние контекста после трансформаций
+function checkTriggerAndAct(trigger, action) {
+  const distance = Phaser.Math.Distance.Between(player.x, player.y, trigger.x, trigger.y);
+  if (distance < 50 && Phaser.Input.Keyboard.JustDown(eKey)) {
+    action();
+  }
 }
-
-// Первоначальная отрисовка
-character.onload = draw;
-
-// Обработчик события изменения размеров окна
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  centerCameraOnCharacter();
-  draw();
-});
-
-// #region Notes
-
-// const getImageByName = async (imageName) => {
-//   return await fetch(`/assets/sprite/walk/${imageName}`)
-//     .then((responce) => responce.blob())
-//     .then((blob) => {
-//       return blob;
-//     });
-// };
-
-// const insertImageToArr = async() => {
-//   for(let i = 0 ; i < spritesName.length ; i++){
-//     const image = await getImageByName(spritesName[i])
-//     sprites.push(image)
-//     console.log(sprites)
-//   }
-// }
-
-// insertImageToArr();
-
-// let spriteIndex = 0;
-// const changeImage = () => {
-//   if(spriteIndex == sprites.length - 1) spriteIndex = 0
-//   character.src = sprites[spriteIndex]
-//   spriteIndex++;
-// }
-// setInterval(() => {
-//   character.src = '/assets/sprite/idle.png';
-// } , 100)
-
-// Перемещение персонажа в центр после изменения размеров окна
-// characterX = canvas.width / 2 - character.width / 2;
-// characterY = canvas.height / 2 - character.height / 2;
-
-//#endregion

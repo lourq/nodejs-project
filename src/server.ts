@@ -1,5 +1,4 @@
 import express from "express";
-import cookieParser from 'cookie-parser'
 import "./config/sequelize"
 import { Server } from "socket.io";
 
@@ -16,11 +15,15 @@ const PORT = 4000;
 
 app.use(express.json());
 app.use(express.static("src/public"));
+app.set('trust proxy', true);
 app.use(pageRoutes)
-app.use(cookieParser())
 
 app.use('/api' , [registrationRoutes , loginRoutes])
 
 const inst = app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
+
+const io = new Server(inst);
+
+export default io;

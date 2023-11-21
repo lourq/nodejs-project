@@ -18,6 +18,10 @@ const Players = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
+    IP : {
+      type: DataTypes.STRING(15),
+      allowNull : false
+    },
     Settings: {
       type: DataTypes.JSON,
     },

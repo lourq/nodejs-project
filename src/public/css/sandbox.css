@@ -3,11 +3,6 @@ body {
   overflow: hidden;
 }
 
-#gameCanvas {
-  display: block;
-  margin: auto;
-  background-image: url("/assets/background/grass.png");
-}
 #menuIcon {
   cursor: pointer;
   font-size: 40px;
