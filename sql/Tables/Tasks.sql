@@ -1,5 +1,0 @@
-CREATE TABLE Tasks (
-    TaskID INT AUTO_INCREMENT PRIMARY KEY,
-    Name VARCHAR(255) NOT NULL,
-    Description TEXT
-);

@@ -33,7 +33,6 @@ let otherPlayersVisible = true;
 let vents = {
   vent1: { x: 1350, y: 309, targetX: 1569, targetY: 602 },
   vent2: { x: 1569, y: 602, targetX: 1350, targetY: 309 },
-  // добавьте больше шахт при необходимости
 };
 
 let otherPlayers = new Map();
@@ -51,6 +50,7 @@ function preload() {
   for (let i = 1; i < 21; i++) {
     this.load.image("frame" + i, "/assets/load/frame" + i + ".png");
   }
+  this.load.image("chat", "/assets/icons/chat.png");
 }
 
 function create() {
@@ -75,7 +75,7 @@ function create() {
     right: Phaser.Input.Keyboard.KeyCodes.D,
   });
 
-  // Создание анимации ходьбы
+  // create animation
   this.anims.create({
     key: "walk",
     frames: [
@@ -92,16 +92,9 @@ function create() {
 
   player.anims.play("walk", true);
 
-  const graphics = this.add.graphics();
-
-  graphics.lineStyle(2, 0xff0000, 0.5); // Толщина 2, красный цвет, 50% прозрачности
-
-  graphics.strokeRect(100, 100, 300, 200); // Пример координат и размеров
-
-  // Создание группы для невидимых стен
+  // create invisible walls
   const walls = this.physics.add.staticGroup();
 
-  // Вы можете добавить столько стен, сколько вам нужно
   walls.create(985, 17, null).setSize(266, 20).setOffset(0, 0).setVisible(true);
 
   // right
@@ -112,7 +105,6 @@ function create() {
     .setVisible(true);
   walls.create(541, 150, null).setSize(5, 55).setOffset(0, 0).setVisible(true);
 
-  // Включение коллизии между игроком и стенами
   this.physics.add.collider(player, walls);
 
   compTrigger = this.physics.add.sprite(1040, 164, "comp").setVisible(true);
@@ -121,7 +113,6 @@ function create() {
   powerTrigger = this.physics.add.sprite(1215, 597, "power").setVisible(true);
   powerTrigger.setDisplaySize(15, 10);
 
-  // Добавление и настройка клавиши E
   eKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
   gif = this.add.sprite(
@@ -131,7 +122,6 @@ function create() {
   );
   gif.setVisible(false);
 
-  // Определение анимации
   const frames = [];
   for (let i = 1; i < 21; i++) {
     frames.push({ key: "frame" + i });
@@ -156,7 +146,6 @@ function create() {
     let otherPlayer = otherPlayers.get(data.id);
 
     if (otherPlayer) {
-      // Интерполяция для плавного перемещения
       this.tweens.add({
         targets: otherPlayer,
         x: data.x,
@@ -165,11 +154,9 @@ function create() {
         duration: 100,
       });
 
-      // Обновление состояния анимации
       otherPlayer.isMoving = data.isMoving;
-      otherPlayer.facingDirection = data.facingDirection; // Например, 'left' или 'right'
+      otherPlayer.facingDirection = data.facingDirection;
     } else {
-      // Создание нового игрока, если он еще не существует
       let newPlayer = this.physics.add.sprite(data.x, data.y, "walk1");
       newPlayer.setDisplaySize(20, 26);
       newPlayer.isMoving = data.isMoving;
@@ -177,6 +164,23 @@ function create() {
       otherPlayers.set(data.id, newPlayer);
     }
   });
+
+  const chatIcon = this.add.image(50, 50, "chat").setScrollFactor(0);
+  chatIcon.setDisplaySize(50, 50); // Измените размер в соответствии с вашими потребностями
+  chatIcon.setInteractive();
+
+  chatIcon.setScrollFactor(0);
+  this.cameras.main.ignore(chatIcon);
+
+  // Обработчик клика по иконке чата
+  chatIcon.on("pointerdown", () => {
+    openChat(); // Функция, которую нужно вызвать
+  });
+}
+
+function openChat() {
+  // Логика для открытия чата
+  console.log("Чат открыт");
 }
 
 function toggleComp() {
@@ -195,22 +199,26 @@ function togglePower() {
   gif.setVisible(true).play("playGif");
 
   canMove = false;
-  
+
   otherPlayers.forEach((otherPlayer) => {
     otherPlayer.setVisible(false);
   });
-  otherPlayersVisible = false
+  otherPlayersVisible = false;
 
-  this.time.delayedCall(2500, () => {
-    gif.setVisible(false);
-    canMove = true; // Включаем возможность движения
-    
-    // Восстановить видимость всех других игроков
-    otherPlayers.forEach((otherPlayer) => {
-      otherPlayer.setVisible(true);
-    });
-    otherPlayersVisible = true
-  }, [], this);
+  this.time.delayedCall(
+    2500,
+    () => {
+      gif.setVisible(false);
+      canMove = true;
+
+      otherPlayers.forEach((otherPlayer) => {
+        otherPlayer.setVisible(true);
+      });
+      otherPlayersVisible = true;
+    },
+    [],
+    this
+  );
 }
 
 function checkVentAndAct(vent) {
@@ -218,10 +226,10 @@ function checkVentAndAct(vent) {
     player.x,
     player.y,
     vent.sprite.x,
-    vent.sprite.y // Используйте sprite.x и sprite.y для вентиляционной шахты
+    vent.sprite.y
   );
   if (distance < 50 && Phaser.Input.Keyboard.JustDown(eKey)) {
-    enterVent(vent, this); // Передайте this как второй параметр
+    enterVent(vent, this);
   }
 }
 
@@ -237,7 +245,7 @@ function checkTriggerAndAct(trigger, action) {
   }
 }
 
-// Функция для входа в вентиляцию
+// vent func
 const enterVent = (vent, scene) => {
   canMove = false;
   player.setVisible(false);
@@ -257,7 +265,6 @@ const enterVent = (vent, scene) => {
 function update() {
   if (canMove) {
     player.setVelocity(0);
-    // Обработка движения игрока, если движение разрешено
     let isMoving = false;
     if (keys.left.isDown) {
       player.setVelocityX(-125);
@@ -285,23 +292,19 @@ function update() {
       socket.emit("playerMove", { x: player.x, y: player.y, isMoving: false });
     }
 
-    // Проверка расстояния от игрока до триггера
     checkTriggerAndAct(compTrigger, toggleComp);
     checkTriggerAndAct(powerTrigger, togglePower.bind(this));
     for (let key in vents) {
       checkVentAndAct.bind(this)(vents[key]);
     }
   } else {
-    // Остановка движения игрока
     player.setVelocity(0);
     player.anims.stop();
     player.setTexture("idle");
   }
 
-  // Отрисовка и анимация других игроков
   otherPlayers.forEach((otherPlayer) => {
     if (otherPlayersVisible) {
-      // Если другие игроки должны быть видимы
       otherPlayer.setVisible(true);
       if (otherPlayer.isMoving) {
         otherPlayer.anims.play("walk", true);
@@ -311,7 +314,6 @@ function update() {
         otherPlayer.setTexture("idle");
       }
     } else {
-      // Если другие игроки должны быть скрыты
       otherPlayer.setVisible(false);
     }
   });

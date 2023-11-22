@@ -1,32 +1,56 @@
-document.getElementById('playButton').addEventListener('click', function() {
-    document.getElementById('mainMenu').style.display = 'none';
-    document.getElementById('settingMenu').style.display = 'none';
-    document.getElementById('gameMenu').style.display = 'flex';
+import socket from "../../utils/socket.js";
+import { create, clear } from "./menuCreateItems/createBubble.js";
+
+socket.on("add message", (msg) => {
+  create(msg);
 });
 
-document.getElementById('settingsButton').addEventListener('click', function() {
-    document.getElementById('mainMenu').style.display = 'none';
-    document.getElementById('gameMenu').style.display = 'none';
-    document.getElementById('settingMenu').style.display = 'flex';
+socket.on("emit chat history", arrMsg => {
+  clear();
+  arrMsg.forEach(e => {
+    create(e)
+  })
 });
 
-document.getElementById('playBackButton').addEventListener('click', function() {
-    document.getElementById('gameMenu').style.display = 'none';
-    document.getElementById('mainMenu').style.display = 'flex';
+playButton.addEventListener("click", function () {
+  mainMenu.style.display = "none";
+  settingMenu.style.display = "none";
+  gameMenu.style.display = "flex";
 });
 
-document.getElementById('settingsBackButton').addEventListener('click', function() {
-    document.getElementById('settingMenu').style.display = 'none';
-    document.getElementById('mainMenu').style.display = 'flex';
+settingsButton.addEventListener("click", function () {
+  mainMenu.style.display = "none";
+  gameMenu.style.display = "none";
+  settingMenu.style.display = "flex";
 });
 
+playBackButton.addEventListener("click", function () {
+  gameMenu.style.display = "none";
+  mainMenu.style.display = "flex";
+});
+
+settingsBackButton.addEventListener("click", function () {
+  settingMenu.style.display = "none";
+  mainMenu.style.display = "flex";
+});
 
 document.addEventListener("DOMContentLoaded", () => {
-  const chatIcon = document.getElementById("chatIcon");
-  const chatWindow = document.getElementById("chatWindow");
-
   chatIcon.addEventListener("click", () => {
     chatWindow.style.display =
       chatWindow.style.display === "block" ? "none" : "block";
   });
+  const checkBox = document.getElementById("full-chat-history");
+  checkBox.addEventListener("change", () => {
+    if (checkBox.checked) {
+      socket.emit('chat history' , null)
+    }
+  });
 });
+
+const postForm = (e) => {
+  e.preventDefault();
+  socket.emit("new message chat", chatForm.chatInput.value , null);
+//   create(chatForm.chatInput.value);
+};
+
+chatForm.addEventListener("submit", postForm);

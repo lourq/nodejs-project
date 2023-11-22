@@ -8,7 +8,6 @@
     <link rel="stylesheet" type="text/css" href="css/menu.css" />
   </head>
   <body>
-    
     <div class="menu" id="mainMenu" style="display: flex">
       <button class="button" id="playButton">Play</button>
       <button class="button" id="settingsButton">Settings</button>
@@ -16,10 +15,6 @@
 
     <div class="menu" id="settingMenu" style="display: none">
       <h2>Settings</h2>
-      <div class="setting">
-        <label for="volume">Music Volume:</label>
-        <input type="range" id="volume" name="volume" min="0" max="100" />
-      </div>
       <div class="setting">
         <label for="full-chat-history">Full Chat History:</label>
         <input
@@ -35,29 +30,27 @@
         <button class="submit-btn">Submit</button>
       </div>
 
-      <div class="setting">
-        <label>Controls:</label>
-        <button class="control-btn">Customize</button>
-      </div>
-
       <button class="back-btn" id="settingsBackButton">Back</button>
     </div>
 
     <div class="menu" id="gameMenu" style="display: none">
-      <button
-        class="menu-item"
-        id="createGameButton"
-        onclick="window.location.href = '/sandbox'"
-      >
-        Create Game
-      </button>
+      <button class="menu-item" id="createGameButton">Create Game</button>
       <button class="menu-item" id="findGameButton">Find Game</button>
       <button class="back-btn" id="playBackButton">Back</button>
     </div>
 
     <div id="chatIcon" class="chat-icon">💬</div>
 
-    <div id="chatWindow" class="chat-window"></div>
+    <div id="chatWindow" class="chat-window">
+      <div id="messageDisplay" class="message-display"></div>
+      <div class="chat-input-container">
+        <form id="chatForm">
+          <input type="text" name="text" id="chatInput" />
+          <button id="chatBtn">></button>
+        </form>
+      </div>
+    </div>
   </body>
   <script type="module" src="/js/script/menuScripts.js"></script>
+  <script type="module" src="/js/api/connect.js"></script>
 </html>

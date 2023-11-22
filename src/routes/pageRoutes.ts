@@ -3,7 +3,7 @@ import {resolve , join} from "path"
 
 const router = express.Router();
 
-router.get(["/menu" , '/settings' , '/sandbox' , '/gameMenu'], (req, res) => {
+router.get(["/menu",'/game'], (req, res) => {
     res.sendFile(join(resolve('') , `/src/public/pages/${req.url}.html`) , (err) => console.error(err))
 });
 

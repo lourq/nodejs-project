@@ -6,14 +6,12 @@ const GameSessions = sequelize.define(
   {
     SessionID: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
+      autoIncrement : true,
       primaryKey: true,
     },
-    StartTime: {
-      type: DataTypes.DATE,
-    },
-    EndTime: {
-      type: DataTypes.DATE,
+    User: {
+      type : DataTypes.STRING,
+      references : { model: "players" , key : "Username"}
     },
     ImpostorID: {
       type: DataTypes.INTEGER,

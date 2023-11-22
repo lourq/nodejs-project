@@ -12,12 +12,7 @@ const ChatLogs = sequelize.define(
     SessionID: {
       type: DataTypes.INTEGER,
       references: { model: "gamesessions", key: "SessionID" },
-      allowNull: false,
-    },
-    PlayerID: {
-      type: DataTypes.INTEGER,
-      references: { model: "players", key: "PlayerID" },
-      allowNull: false,
+      allowNull: true,
     },
     Message: {
       type: DataTypes.STRING(100),
@@ -30,16 +25,6 @@ const ChatLogs = sequelize.define(
   },
   {
     timestamps: false,
-    indexes: [
-      {
-        name: "idx_sessionid",
-        fields: ["SessionID"],
-      },
-      {
-        name: "idx_playerid",
-        fields: ["PlayerID"],
-      },
-    ],
   }
 );
 

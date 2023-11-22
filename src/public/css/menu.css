@@ -167,7 +167,7 @@ body {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  background-color: #007bff;
+  background-color: white;
   color: white;
   padding: 10px;
   border-radius: 50%;
@@ -176,15 +176,44 @@ body {
 
 .chat-window {
   position: fixed;
-  bottom: 60px; 
+  bottom: 60px;
   left: 20px;
   width: 400px;
   height: 400px;
-  background-color: white;
   border: 1px solid #ccc;
   border-radius: 10px;
-  display: none; 
-  overflow: auto;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.message-display {
+  height: 300px; 
+  overflow-y: scroll; 
+  padding: 5px;
+  background-color: #fff;
+  margin-bottom: 10px;
+}
+
+.chat-input-container {
+  padding: 5px;
+}
+
+#chatInput {
+  flex-grow: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#chatBtn {
+  width: 40px;
+  height: 30px;
+  margin-left: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #eee;
+  cursor: pointer;
 }
 
 #backButton {

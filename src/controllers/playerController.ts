@@ -1,11 +1,11 @@
 import Players from "../models/Players";
 
-export const addData = async (data , ip) => {
+export const addData = async (data, ip) => {
   try {
     return await Players.build({
       Username: data.userName,
       Password: data.password,
-      IP : ip
+      IP: ip,
     }).save();
   } catch (err) {
     throw err;
@@ -19,9 +19,23 @@ export const checkCredentials = async (username, password) => {
         Username: username,
       },
     });
-    if (user) return password === user.Password;
+    if (user) return password === user!.Password;
     return false;
   } catch (err) {
     throw err;
   }
 };
+
+export const getUserNameByIp = async(ip) => {
+  try{
+    const user = await Players.findOne({
+      where : {
+        IP : ip
+      }
+    })
+    if (!user) throw new Error('User not found');
+    return user.Username;
+  }catch(err){
+    throw err;
+  }
+}

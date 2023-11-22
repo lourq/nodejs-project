@@ -22,9 +22,6 @@ const Players = sequelize.define(
       type: DataTypes.STRING(15),
       allowNull : false
     },
-    Settings: {
-      type: DataTypes.JSON,
-    },
   },
   {
     timestamps: false,
