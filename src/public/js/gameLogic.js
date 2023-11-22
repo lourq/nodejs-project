@@ -166,20 +166,18 @@ function create() {
   });
 
   const chatIcon = this.add.image(50, 50, "chat").setScrollFactor(0);
-  chatIcon.setDisplaySize(50, 50); // Измените размер в соответствии с вашими потребностями
+  chatIcon.setDisplaySize(50, 50); 
   chatIcon.setInteractive();
 
   chatIcon.setScrollFactor(0);
   this.cameras.main.ignore(chatIcon);
 
-  // Обработчик клика по иконке чата
   chatIcon.on("pointerdown", () => {
-    openChat(); // Функция, которую нужно вызвать
+    openChat(); 
   });
 }
 
 function openChat() {
-  // Логика для открытия чата
   console.log("Чат открыт");
 }
 

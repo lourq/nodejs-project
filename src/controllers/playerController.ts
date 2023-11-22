@@ -39,3 +39,18 @@ export const getUserNameByIp = async(ip) => {
     throw err;
   }
 }
+
+export const getUsersSizeNames = async() => {
+  try {
+    const players = await Players.findAll({
+      attributes: ['Username']
+    });
+    const usernames = players.map(player => player.Username);
+    return {
+      size: players.length,
+      usernames
+    };
+  }catch(err){
+    throw err;
+  }
+}

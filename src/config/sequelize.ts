@@ -14,9 +14,6 @@ const sequelize = new Sequelize({
 
 sequelize
   .authenticate()
-  .then(() => {
-    console.log("authenticate");
-  })
   .catch((err) => {
     console.error(err);
   });
