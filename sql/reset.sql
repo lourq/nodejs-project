@@ -1,6 +1,12 @@
-CREATE DATABASE among_us_db;
+DROP TABLE IF EXISTS Players;
+DROP TABLE IF EXISTS Tasks;
+DROP TABLE IF EXISTS ChatLogs;
+DROP TABLE IF EXISTS GameEvents;
+DROP TABLE IF EXISTS GameSettings;
+DROP TABLE IF EXISTS GameSessions;
 
-use among_us_db;
+CREATE DATABASE IF NOT EXISTS among_us_db;
+USE among_us_db;
 
 CREATE TABLE Players (
     PlayerID INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,7 +22,6 @@ CREATE TABLE GameSessions (
     FOREIGN KEY (User) REFERENCES Players(Username),
     FOREIGN KEY (ImpostorID) REFERENCES Players(PlayerID)
 );
-
 
 CREATE TABLE Tasks (
     TaskID INT AUTO_INCREMENT PRIMARY KEY,
