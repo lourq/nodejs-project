@@ -4,10 +4,8 @@ import {getUserNameByIp} from "../controllers/playerController"
 const router = express.Router();
 
 router.get('/join' , async(req, res) => {
-    const ip = req.ip?.split(':').pop();
-    console.log(ip)
+    const ip : string | undefined = req.ip?.split(':').pop();
     const userName : string = await getUserNameByIp(ip).catch(err => console.error(err));
-    console.log(userName)
     // addSession(userName).then(() => {
     //     res.status(200).send()
     // }).catch(err => {
